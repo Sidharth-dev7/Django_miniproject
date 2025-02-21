@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #f4f4f9;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+        }
+
+        /* Navbar Styling */
+        .nav {
+            background-color: #0d1e48;
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav ul {
+            list-style-type: none;
+            text-align: center;
+        }
+
+        .nav ul li {
+            display: inline-block;
+            margin: 0 20px;
+        }
+
+        .nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav ul li a:hover {
+            background-color: #111eb6;
+        }
+
+        /* Main Section Styling */
+        h2 {
+            text-align: center;
+            margin-top: 100px;
+            font-size: 2rem;
+            color: #0d1e48;
+        }
+
+        /* Table Styling */
+        table {
+            width: 90%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        th {
+            background-color: #0d1e48;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            background-color: #111eb6;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0d1e48;
+        }
+
+        button a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Styling for Invoice Links */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        /* No Orders Message */
+        p {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            table {
+                width: 100%;
+                padding: 10px;
+            }
+
+            th, td {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            button {
+                padding: 6px 12px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <ul>
+            <li style="float:left; color: #f1f1f1;" >YourPad</li>
+            <li><a href="{% url 'view' %}" class="right_end">HOME</a></li>
+        </ul>
+    </div>
+
+    <h2 style="margin-top: 4cm;">Your Order History</h2>
+
+    {% if orders %}
+        <table>
+            <tr>
+                <th >Order #</th>
+                <th >Name</th>
+                <th >Email</th>
+                <th >Address</th>
+                <th >Total Price</th>
+                <th >Date</th>
+                <th >Invoice</th>
+            </tr>
+
+            {% for i in orders %}
+                <tr>
+                    <td>{{i.id }}</td>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.email }}</td>
+                    <td>{{ i.address }}</td>
+                    <td>${{i.total_price }}</td>
+                    <td>{{ i.created_at|date:"Y-m-d H:i" }}</td>
+                   
+                    <td><button><a href="{% url 'generate_invoice' i.id %}">Download Invoice</a></button></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>You have no order history yet.</p>
+    {% endif %}
+
+</body>
+</html>

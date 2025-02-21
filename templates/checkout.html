@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+
+    <div class="nav">
+        <ul>
+            <li style="float:left" class="sitename">EcomSite</li>
+            <li><a href="{% url 'view'  %}" class="right_end">HOME</a></li>
+            <li><a href="{% url 'cart' %}" class="right_end">CART</a></li>
+            
+        </ul>
+    </div>
+
+    <div class="checkout-container">
+        <h2>Checkout</h2>
+
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <ul>
+                {% for item in cart_items %}
+                    <li>{{ item.product.name }} x {{ item.quantity }} - ${{ item.get_total_price }}</li>
+                {% endfor %}
+            </ul>
+            <h3>Total: <span class="total-price">${{ total_price }}</span></h3>
+        </div>
+
+        <form action="{% url 'process_checkout' %}" method="post" class="checkout-form">
+            {% csrf_token %}
+            
+            <h3>Billing Details</h3>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" required></textarea>
+
+            <h3>Payment Method</h3>
+            <input type="radio" id="cod" name="payment_method" value="COD" checked>
+            <label for="cod">Cash on Delivery</label>
+
+            <input type="radio" id="card" name="payment_method" value="Card">
+            <label for="card">Credit/Debit Card</label>
+
+            <button type="submit" class="checkout-btn">Place Order</button>
+        </form>
+    </div>
+
+</body>
+</html>

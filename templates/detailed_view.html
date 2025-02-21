@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <title>Product Detail</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="nav" style="margin-top: 3cm;">
+        <ul>
+            <li style="float:left" class="sitename">YourPad</li>
+            <li><a href="{% url 'view'  %}" class="right_end">HOME</a></li>
+            
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'cart' %}">CART</a></li>
+            {% else %}
+                <li><a href="" onclick="showLoginAlert()">CART</a></li>
+            {% endif %}
+            
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">LOGOUT</a></li>
+                <li><a href="{% url 'order_history' %}">Order History</a></li>
+            {% else %}
+                <li><a href="{% url 'logins' %}">LOGIN/REGISTER</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Product Detail Section -->
+    <div class="product-detail">
+        <label for=""><b>Details Of {{ cr.name }}</b></label>
+        <br><br><br><br>
+        
+      
+
+        <div class="product-image">
+    
+            {% if cr.image %}
+                <img src="{{ cr.image.url }}" alt="{{ cr.name }}" width="80px"><br><br>
+            {% else %}
+                <td>No image</td>
+            {% endif %}
+        </div>
+
+        <div class="product-description">
+            <label>Description: {{ cr.description }}</label><br><br>
+        </div>
+
+        <div class="price">
+            <label>Price: {{ cr.price }}</label>
+        </div>
+
+        <!-- Add to Cart Button -->
+        <div class="action-btn">
+            {% if user.is_authenticated %}
+                <a href="{% url 'add_to_cart' cr.id %}">
+                    <button class="buttns">Add to Cart</button>
+                </a>
+            {% else %}
+            <a href="{% url 'add_to_cart' cr.id %}" > <button class="buttns">Add to Cart</button></a>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function showLoginAlert() {
+            alert("LOGIN FIRST");
+            window.location.href = "{% url 'logins' %}";
+        }
+    </script>
+</body>
+</html>
+</html>

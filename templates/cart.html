@@ -1,0 +1,218 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #f4f4f9;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+        }
+
+        /* Navbar Styling */
+        .nav {
+            background-color: #0d1e48;
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav ul {
+            list-style-type: none;
+            text-align: center;
+        }
+
+        .nav ul li {
+            display: inline-block;
+            margin: 0 20px;
+        }
+
+        .nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav ul li a:hover {
+            background-color: #111eb6;
+        }
+
+        /* Main Section Styling */
+        h2 {
+            text-align: center;
+            margin-top: 100px;
+            font-size: 2rem;
+            color: #0d1e48;
+        }
+
+        /* Table Styling */
+        table {
+            width: 90%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        th {
+            background-color: #0d1e48;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Quantity Change Links Styling */
+        a {
+            text-decoration: none;
+            color: #0d1e48;
+            padding: 0 10px;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #111eb6;
+        }
+
+        /* Button Styling */
+        .checkout-btn {
+            background-color: #111eb6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            display: inline-block;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            background-color: #0d1e48;
+        }
+
+        /* Empty Cart Message */
+        p {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        /* Delete Link */
+        a.delete-link {
+            color: red;
+            font-weight: bold;
+        }
+
+        a.delete-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            table {
+                width: 100%;
+                padding: 10px;
+            }
+
+            th, td {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            .checkout-btn {
+                padding: 8px 16px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <ul>
+            <li style="float:left" class="sitename">EcomSite</li>
+            <li><a href="{% url 'view'  %}" class="right_end">HOME</a></li>
+            <li><a href="{% url 'order_history' %}" class="right_end">Order History</a></li>    
+        </ul>
+    </div>
+
+    <h2>Your Cart</h2>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for item in cart_items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td><img src="{{ item.product.image.url }}" alt="" width="100px"></td>
+            <td>
+                <a href="{% url 'decrement_quantity' item.id %}">[-]</a>
+                {{ item.quantity }}
+                <a href="{% url 'increment_quantity' item.id %}">[+]</a>
+            </td>
+            <td>{{ item.product.price }}</td>
+            <td>{{ item.get_total_price }}</td>
+            <td>
+                <a href="{% url 'delete_from_cart' item.id %}" class="delete-link">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Total: ${{ total_price }}</h3>
+
+    <div style="margin-top: 2cm;">
+        {% if cart_items %}
+        <a href="{% url 'checkout' %}" class="checkout-btn">Proceed to Checkout</a>
+        {% else %}
+        <p>Your cart is empty.</p>
+        {% endif %}
+    </div>
+   
+</body>
+</html>
+
+
+

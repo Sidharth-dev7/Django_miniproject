@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(123, 161, 202);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 800px;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(18, 3, 101, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #040346;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+     
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0d1e48;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+        
+        }
+        button:hover {
+            background-color: #111eb6;
+        }
+        h1 {
+            text-align: center;
+            color:#0d1e48 ;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Login Form</h1>
+    <form action="/userlog/" method="POST">
+        {% csrf_token %}
+        
+
+        <label>Username:</label>
+        <input type="text" id="name" name="username" placeholder="Enter your user name">
+        
+        <label>Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password">
+        <button type="submit">login</button>
+       
+        <p>REGISTER HERE</p>
+        <button><a href="/userreg/" style="text-decoration: none; color: #fff;">register</a></button>
+    </form>
+</body>
+</html>
